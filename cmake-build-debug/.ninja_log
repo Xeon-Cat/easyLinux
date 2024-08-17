@@ -1,0 +1,8 @@
+# ninja log v6
+6	2079	1723873020010059000	CMakeFiles/easyLinux.dir/main.cpp.o	58c99e29f89a425
+2269	2637	1723873560870600800	easyLinux	38d3b96add1339b
+4	2215	1723873558605703100	CMakeFiles/easyLinux.dir/src/main.cpp.o	f511e5f3e1e7d193
+11	2282	1723874154556466700	CMakeFiles/easyLinux.dir/src/easyLinux/MainFrame.cpp.o	4681c22cc2c8c63b
+8	2427	1723874154554611600	CMakeFiles/easyLinux.dir/src/main.cpp.o	f511e5f3e1e7d193
+10	2431	1723874154555682200	CMakeFiles/easyLinux.dir/src/easyLinux/EasyLinux.cpp.o	1f5383a2d677bafd
+2431	3062	1723874156977077400	easyLinux	c4d293d1989c9177

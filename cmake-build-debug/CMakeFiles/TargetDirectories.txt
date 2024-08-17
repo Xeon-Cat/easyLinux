@@ -1,0 +1,3 @@
+/ssd-sda1/easyLinux/cmake-build-debug/CMakeFiles/easyLinux.dir
+/ssd-sda1/easyLinux/cmake-build-debug/CMakeFiles/edit_cache.dir
+/ssd-sda1/easyLinux/cmake-build-debug/CMakeFiles/rebuild_cache.dir

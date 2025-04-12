@@ -62,10 +62,9 @@ class EasyLinuxApp:
         # 搜索框
         search_frame = ttk.Frame(left_panel)
         search_frame.pack(fill=tk.X, pady=5)
-        ttk.Label(search_frame, text="搜索软件:").pack(side=tk.LEFT)
+        ttk.Label(search_frame, text="搜索/安装/卸载软件:").pack(side=tk.LEFT)
         self.search_entry = ttk.Entry(search_frame)
         self.search_entry.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
-        ttk.Button(search_frame, text="搜索", command=self.search_packages).pack(side=tk.LEFT)
         
         # 软件列表
         self.software_list = tk.Listbox(left_panel, height=15)
@@ -75,13 +74,20 @@ class EasyLinuxApp:
         btn_frame = ttk.Frame(left_panel)
         btn_frame.pack(fill=tk.X, pady=5)
         ttk.Button(btn_frame, text="刷新列表", command=self.update_package_list).pack(side=tk.LEFT, fill=tk.X, expand=True)
-        ttk.Button(btn_frame, text="安装选中", command=self.install_selected).pack(side=tk.LEFT, fill=tk.X, expand=True)
+        ttk.Button(btn_frame, text="安装", command=self.install_what_inputed).pack(side=tk.LEFT, fill=tk.X, expand=True)
+        ttk.Button(btn_frame, text="卸载", command=self.remove_what_inputed).pack(side=tk.LEFT, fill=tk.X, expand=True)
         ttk.Button(btn_frame, text="卸载选中", command=self.remove_selected).pack(side=tk.LEFT, fill=tk.X, expand=True)
+        ttk.Button(btn_frame, text="搜索", command=self.search_packages).pack(side=tk.LEFT, fill=tk.X, expand=True)
         
         # 右侧功能面板
         right_panel = ttk.LabelFrame(main_frame, text="系统工具")
         right_panel.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=5, pady=5)
         
+        # 终端输出区域
+        self.output_area = scrolledtext.ScrolledText(right_panel, height=10, wrap=tk.WORD)
+        self.output_area.pack(fill=tk.BOTH, expand=True, pady=5)
+        self.output_area.config(state=tk.DISABLED)
+
         # 系统信息
         ttk.Button(right_panel, text="显示系统信息", 
                   command=self.show_system_info).pack(fill=tk.X, pady=2)
@@ -100,16 +106,11 @@ class EasyLinuxApp:
         # 文件管理器按钮
         ttk.Button(right_panel, text="文件管理器", 
                   command=self.open_file_manager).pack(fill=tk.X, pady=2)
-        
-        # 终端输出区域
-        self.output_area = scrolledtext.ScrolledText(right_panel, height=10, wrap=tk.WORD)
-        self.output_area.pack(fill=tk.BOTH, expand=True, pady=5)
-        self.output_area.config(state=tk.DISABLED)
 
     def update_package_list(self):
         self.software_list.delete(0, tk.END)
         try:
-            # 使用环境变量禁用分页器和颜色
+            # 禁用分页器 & 颜色
             env = dict(os.environ)
             env.update({"PAGER": "cat", "TERM": "dumb"})
             
@@ -157,13 +158,13 @@ class EasyLinuxApp:
         except subprocess.CalledProcessError as e:
             messagebox.showerror("错误", f"搜索失败:\n{e.stderr}")
 
-    def install_selected(self):
-        selection = self.software_list.curselection()
+    def install_what_inputed(self):
+        selection = self.search_entry.get()
         if not selection:
-            messagebox.showwarning("警告", "请先选择一个软件包")
+            messagebox.showwarning("警告", "请先输入一个软件包名")
             return
             
-        pkg = self.software_list.get(selection[0])
+        pkg = selection
         self.run_command_with_output(f"sudo apt install -y {pkg}")
 
     def remove_selected(self):
@@ -174,6 +175,15 @@ class EasyLinuxApp:
             
         pkg = self.software_list.get(selection[0])
         self.run_command_with_output(f"sudo apt remove -y {pkg}")
+    
+    def remove_what_inputed(self):
+        selection = self.search_entry.get()
+        if not selection:
+            messagebox.showerror("警告", "请先输入一个软件包名")
+            return 
+        self.run_command_with_output(f"sudo apt remove -y {selection}")
+
+
 
     def run_command_with_output(self, command):
         try:
@@ -183,7 +193,7 @@ class EasyLinuxApp:
             self.output_area.see(tk.END)
             self.output_area.config(state=tk.DISABLED)
             
-            # 使用伪终端模拟真实终端行为
+            # 模拟终端
             process = subprocess.Popen(
                 command,
                 shell=True,

@@ -141,7 +141,7 @@ class EasyLinuxApp:
             env.update({"PAGER": "cat", "TERM": "dumb"})
             
             result = subprocess.run(
-                ["apt", "search", query],
+                ["apt", "list", "*" + query + "*"],
                 env=env,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,

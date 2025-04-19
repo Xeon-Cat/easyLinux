@@ -77,8 +77,8 @@ class EasyLinuxApp:
         btn_frame = ttk.Frame(left_panel)
         btn_frame.pack(fill=tk.X, pady=5)
         ttk.Button(btn_frame, text="刷新列表", command=self.update_package_list).pack(side=tk.LEFT, fill=tk.X, expand=True)
-        ttk.Button(btn_frame, text="安装", command=self.install_what_inputed).pack(side=tk.LEFT, fill=tk.X, expand=True)
-        ttk.Button(btn_frame, text="卸载", command=self.remove_what_inputed).pack(side=tk.LEFT, fill=tk.X, expand=True)
+        ttk.Button(btn_frame, text="安装", command=self.install_what_inputted).pack(side=tk.LEFT, fill=tk.X, expand=True)
+        ttk.Button(btn_frame, text="卸载", command=self.remove_what_inputted).pack(side=tk.LEFT, fill=tk.X, expand=True)
         ttk.Button(btn_frame, text="卸载选中", command=self.remove_selected).pack(side=tk.LEFT, fill=tk.X, expand=True)
         ttk.Button(btn_frame, text="搜索", command=self.search_packages).pack(side=tk.LEFT, fill=tk.X, expand=True)
         
@@ -161,7 +161,7 @@ class EasyLinuxApp:
         except subprocess.CalledProcessError as e:
             messagebox.showerror("错误", f"搜索失败:\n{e.stderr}")
 
-    def install_what_inputed(self):
+    def install_what_inputted(self):
         selection = self.search_entry.get()
         if not selection:
             messagebox.showwarning("警告", "请先输入一个软件包名")
@@ -179,7 +179,7 @@ class EasyLinuxApp:
         pkg = self.software_list.get(selection[0])
         self.run_command_with_output(f"sudo apt remove -y {pkg}")
     
-    def remove_what_inputed(self):
+    def remove_what_inputted(self):
         selection = self.search_entry.get()
         if not selection:
             messagebox.showerror("警告", "请先输入一个软件包名")

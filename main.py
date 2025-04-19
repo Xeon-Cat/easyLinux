@@ -6,13 +6,13 @@ import os
 import sys
 
 class EasyLinuxApp:
-    def __init__(self, root):
+    def __init__(self, master):
         self.software_list = None
         self.search_entry = None
         self.output_area = None
-        self.root = root
-        self.root.title("easyLinux")
-        self.root.geometry("1000x700")
+        self.master = master
+        self.master.title("easyLinux")
+        self.master.geometry("1000x700")
         
         # 主题设置
         self.themes = {
@@ -28,18 +28,18 @@ class EasyLinuxApp:
         self.create_main_frame()
         
         # 状态栏
-        self.status = tk.Label(root, text="就绪", bd=1, relief=tk.SUNKEN, anchor=tk.W)
+        self.status = tk.Label(master, text="就绪", bd=1, relief=tk.SUNKEN, anchor=tk.W)
         self.status.pack(side=tk.BOTTOM, fill=tk.X)
 
         # 初始化软件列表
         self.update_package_list()
 
     def create_menu(self):
-        menubar = tk.Menu(self.root)
+        menubar = tk.Menu(self.master)
         
         # 文件菜单
         file_menu = tk.Menu(menubar, tearoff=0)
-        file_menu.add_command(label="退出", command=self.root.quit)
+        file_menu.add_command(label="退出", command=self.master.quit)
         menubar.add_cascade(label="文件", menu=file_menu)
         
         # 设置菜单
@@ -52,10 +52,10 @@ class EasyLinuxApp:
         help_menu.add_command(label="关于", command=self.show_about)
         menubar.add_cascade(label="帮助", menu=help_menu)
         
-        self.root.config(menu=menubar)
+        self.master.config(menu=menubar)
 
     def create_main_frame(self):
-        main_frame = ttk.Frame(self.root)
+        main_frame = ttk.Frame(self.master)
         main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
         
         # 左侧功能面板
@@ -213,7 +213,7 @@ class EasyLinuxApp:
                 self.output_area.insert(tk.END, line)
                 self.output_area.see(tk.END)
                 self.output_area.config(state=tk.DISABLED)
-                self.root.update()
+                self.master.update()
                 
             process.wait()
             
@@ -262,7 +262,7 @@ class EasyLinuxApp:
         theme = self.themes[self.current_theme]
         
         # 更新主窗口颜色
-        self.root.config(bg=theme["bg"])
+        self.master.config(bg=theme["bg"])
         
         # 更新状态栏颜色
         self.status.config(bg=theme["bg"], fg=theme["fg"])
@@ -290,7 +290,7 @@ class EasyLinuxApp:
 
     def update_status(self, message):
         self.status.config(text=message)
-        self.root.after(5000, lambda: self.status.config(text="就绪"))
+        self.master.after(5000, lambda: self.status.config(text="就绪"))
 
 if __name__ == "__main__":
     if os.getuid() > 0:

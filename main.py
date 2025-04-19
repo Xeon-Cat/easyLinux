@@ -7,6 +7,9 @@ import sys
 
 class EasyLinuxApp:
     def __init__(self, root):
+        self.software_list = None
+        self.search_entry = None
+        self.output_area = None
         self.root = root
         self.root.title("easyLinux")
         self.root.geometry("1000x700")
@@ -226,7 +229,8 @@ class EasyLinuxApp:
         except Exception as e:
             messagebox.showerror("错误", f"执行命令时出错:\n{str(e)}")
 
-    def open_file_manager(self):
+    @staticmethod
+    def open_file_manager():
         filedialog.askdirectory(title="选择目录")
 
     def show_system_info(self):
@@ -272,7 +276,8 @@ class EasyLinuxApp:
         
         self.update_status(f"已切换至 {self.current_theme} 主题")
 
-    def show_about(self):
+    @staticmethod
+    def show_about():
         about_text = """easyLinux 助手 v1.1
         
         为Linux新手设计的图形界面工具

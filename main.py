@@ -68,11 +68,7 @@ class EasyLinuxApp:
         ttk.Label(search_frame, text="搜索/安装/卸载软件:").pack(side=tk.LEFT)
         self.search_entry = ttk.Entry(search_frame)
         self.search_entry.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
-        
-        # 软件列表
-        self.software_list = tk.Listbox(left_panel, height=15)
-        self.software_list.pack(fill=tk.BOTH, expand=True, pady=5)
-        
+
         # 软件操作按钮
         btn_frame = ttk.Frame(left_panel)
         btn_frame.pack(fill=tk.X, pady=5)
@@ -81,6 +77,10 @@ class EasyLinuxApp:
         ttk.Button(btn_frame, text="卸载", command=self.remove_what_inputted).pack(side=tk.LEFT, fill=tk.X, expand=True)
         ttk.Button(btn_frame, text="卸载选中", command=self.remove_selected).pack(side=tk.LEFT, fill=tk.X, expand=True)
         ttk.Button(btn_frame, text="搜索", command=self.search_packages).pack(side=tk.LEFT, fill=tk.X, expand=True)
+
+        # 软件列表
+        self.software_list = tk.Listbox(left_panel, height=15)
+        self.software_list.pack(fill=tk.BOTH, expand=True, pady=5)
         
         # 右侧功能面板
         right_panel = ttk.LabelFrame(main_frame, text="系统工具")
@@ -278,7 +278,7 @@ class EasyLinuxApp:
 
     @staticmethod
     def show_about():
-        about_text = """easyLinux 助手 v1.1
+        about_text = """easyLinux 助手 v1.2
         
         为Linux新手设计的图形界面工具
         提供软件管理、系统维护等功能
@@ -293,6 +293,9 @@ class EasyLinuxApp:
         self.master.after(5000, lambda: self.status.config(text="就绪"))
 
 if __name__ == "__main__":
+    if not sys.platform.startswith('linux'):
+        messagebox.showerror("错误", "仅在 Linux 系统运行")
+        sys.exit(1)
     if os.getuid() > 0:
         messagebox.showerror("错误", "需要 root 权限")
         sys.exit(1)
